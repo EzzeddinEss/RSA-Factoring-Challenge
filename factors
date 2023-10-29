@@ -1,0 +1,58 @@
+#!/usr/bin/python3
+"""
+This module is designed to factorize numbers as much as possible.
+"""
+import sys
+import time
+
+
+def factorize(n):
+    """
+    This function returns the factors of a given number.
+
+    Args:
+        n (int): The input number to factorize.
+
+    Returns:
+        The factors of the number.
+    """
+    factors = []
+    for idx in range(2, int(n / 2) + 1):
+        if n % idx == 0:
+            b = idx
+            c = int(n / idx)
+            factors.append(c)
+            factors.append(b)
+            return factors
+    return None
+
+
+def main():
+    """
+    The main function.
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+    """
+    if len(sys.argv) != 2:
+        print("Usage: factors <file>")
+        exit()
+    try:
+        file = open(sys.argv[1], "r")
+        numbers = file.readlines()
+        start_time = time.time()
+        for i in range(0, len(numbers)):
+            numbers[i] = int(numbers[i].strip())
+            factors = factorize(numbers[i])
+            if factors is None:
+                print(f"{numbers[i]:d} is a prime number.")
+            else:
+                print(f"{numbers[i]:d}={factors[0]:d}*{factors[1]:d}")
+            if time.time() - start_time > 5:
+                exit("Time limit exceeded.")
+    except FileNotFoundError:
+        print(f"Error: '{sys.argv[1]}' does not exist.")
+
+
+if __name__ == "__main__":
+    main()
